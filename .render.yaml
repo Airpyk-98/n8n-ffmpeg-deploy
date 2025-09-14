@@ -6,15 +6,23 @@ services:
     disk:
       name: n8n-data
       mountPath: /data
-      sizeGB: 5
+      sizeGB: 10  # Updated disk size to 10GB
     envVars:
       - key: N8N_ENCRYPTION_KEY
         generateValue: true
       - key: N8N_PROTOCOL
         value: https
       - key: N8N_HOST
-        value: airpyk.onrender.com
+        value: n8n-ffmpeg-deploy-tkgq.onrender.com
       - key: WEBHOOK_URL
-        value: https://airpyk.onrender.com/
+        value: https://n8n-ffmpeg-deploy-tkgq.onrender.com/
       - key: N8N_PROXY_HOPS
         value: "1"
+      - key: N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS
+        value: "true"
+      - key: DB_SQLITE_POOL_SIZE
+        value: "5"
+      - key: N8N_RUNNERS_ENABLED
+        value: "true"
+      - key: N8N_BLOCK_ENV_ACCESS_IN_NODE
+        value: "false"
