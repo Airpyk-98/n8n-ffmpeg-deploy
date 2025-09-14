@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: n8n
+    env: docker
+    autoDeploy: true
+    disk:
+      name: n8n-data
+      mountPath: /data
+      sizeGB: 5
+    envVars:
+      - key: N8N_ENCRYPTION_KEY
+        generateValue: true
+      - key: N8N_PROTOCOL
+        value: https
+      - key: N8N_HOST
+        value: airpyk.onrender.com
+      - key: WEBHOOK_URL
+        value: https://airpyk.onrender.com/
+      - key: N8N_PROXY_HOPS
+        value: "1"
