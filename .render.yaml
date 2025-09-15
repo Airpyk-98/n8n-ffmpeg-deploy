@@ -6,23 +6,35 @@ services:
     disk:
       name: n8n-data
       mountPath: /data
-      sizeGB: 10  # Updated disk size to 10GB
+      sizeGB: 10   # increased disk size
     envVars:
-      - key: N8N_ENCRYPTION_KEY
-        generateValue: true
-      - key: N8N_PROTOCOL
-        value: https
+      # Core n8n settings
       - key: N8N_HOST
         value: n8n-ffmpeg-deploy-tkgq.onrender.com
+      - key: N8N_PROTOCOL
+        value: https
       - key: WEBHOOK_URL
         value: https://n8n-ffmpeg-deploy-tkgq.onrender.com/
-      - key: N8N_PROXY_HOPS
-        value: "1"
+      - key: N8N_PORT
+        value: "5678"
+      - key: N8N_ENCRYPTION_KEY
+        generateValue: true
       - key: N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS
         value: "true"
+      
+      # Database settings (SQLite with disk persistence)
       - key: DB_SQLITE_POOL_SIZE
         value: "5"
+      
+      # Worker / runner settings
       - key: N8N_RUNNERS_ENABLED
         value: "true"
       - key: N8N_BLOCK_ENV_ACCESS_IN_NODE
         value: "false"
+
+    # Use FFmpeg-enabled n8n image
+    docker:
+      image: n8nio/n8n:latest-full   # this image comes with FFmpeg installed
+
+    # Optional: automatic redeploy on new commits
+    autoDeploy: true
