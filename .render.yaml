@@ -2,11 +2,10 @@ services:
   - type: web
     name: n8n
     env: docker
-    autoDeploy: true
     disk:
       name: n8n-data
       mountPath: /data
-      sizeGB: 10   # increased disk size
+      sizeGB: 10
     envVars:
       # Core n8n settings
       - key: N8N_HOST
@@ -15,6 +14,13 @@ services:
         value: https
       - key: WEBHOOK_URL
         value: https://n8n-ffmpeg-deploy-tkgq.onrender.com/
+      
+      # ---- THIS IS THE FIX ----
+      # Trust the Render reverse proxy to solve the 'X-Forwarded-For' error
+      - key: N8N_TRUST_PROXY
+        value: "true"
+      # -------------------------
+
       - key: N8N_PORT
         value: "5678"
       - key: N8N_ENCRYPTION_KEY
@@ -34,7 +40,7 @@ services:
 
     # Use FFmpeg-enabled n8n image
     docker:
-      image: n8nio/n8n:latest-full   # this image comes with FFmpeg installed
+      image: n8nio/n8n:latest-full # this image comes with FFmpeg installed
 
-    # Optional: automatic redeploy on new commits
+    # Optional: automatic redeploy on new commits (I removed the duplicate entry from the end)
     autoDeploy: true
