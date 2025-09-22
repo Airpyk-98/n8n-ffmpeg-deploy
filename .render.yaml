@@ -2,30 +2,26 @@ services:
   - type: web
     name: n8n
     env: docker
-    
-    # ---- THIS IS THE KEY CHANGE ----
-    # This tells Render to build the Dockerfile in your repository's root directory
-    # instead of pulling a pre-built image from Docker Hub.
+    # This correctly tells Render to build the Dockerfile in this repository
     dockerfilePath: ./Dockerfile
     dockerContext: .
-    # --------------------------------
-
     disk:
       name: n8n-data
       mountPath: /data
       sizeGB: 10
     envVars:
-      # These variables are still useful to set here as they are specific
-      # to your Render environment (like the hostname).
+      # Keep only the variables that are specific to the Render environment
       - key: N8N_HOST
         value: n8n-ffmpeg-deploy-tkgq.onrender.com
       - key: N8N_PROTOCOL
         value: https
       - key: WEBHOOK_URL
         value: https://n8n-ffmpeg-deploy-tkgq.onrender.com/
-      - key: N8N_ENCRYPTION_KEY # Keep this for security
+      - key: N8N_ENCRYPTION_KEY
         generateValue: true
-      - key: N8N_BLOCK_ENV_ACCESS_IN_NODE
-        value: "false" # Overrides the Dockerfile ENV for your specific need
-
+      - key: N8N_RUNNERS_ENABLED # Keep runners enabled
+        value: "true"
+      - key: N8N_BLOCK_ENV_ACCESS_IN_NODE # Keep for Code node access
+        value: "false"
+        
     autoDeploy: true
