@@ -1,20 +1,20 @@
 # Use the official n8n base image
 FROM docker.n8n.io/n8nio/n8n:latest
 
-# Switch to the root user to install packages
+# Switch to the root user to create config and install packages
 USER root
 
-# ---- THIS IS THE MOST RELIABLE FIX ----
-# Set the environment variables directly in the image
-# This guarantees n8n starts with the correct settings
-ENV N8N_TRUST_PROXY=true
-ENV N8N_RUNNERS_ENABLED=true
-ENV DB_SQLITE_POOL_SIZE=10
+# ---- THE DEFINITIVE FIX ----
+# Create a permanent config file inside the image that forces the proxy setting.
+# This bypasses all environment variable issues.
+RUN mkdir -p /home/node/.n8n/ && \
+    echo "module.exports = { express: { 'trust proxy': true } };" > /home/node/.n8n/config.js && \
+    chown -R node:node /home/node/.n8n
 
-# Install ffmpeg
+# Install ffmpeg for media processing
 RUN apk add --no-cache ffmpeg
 
-# Set a persistent data folder (Render disk will mount here)
+# Set the persistent data folder (Render disk will mount here at /data)
 ENV N8N_USER_FOLDER=/data
 
 # Expose n8n's default port for Render
