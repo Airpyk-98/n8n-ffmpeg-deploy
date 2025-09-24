@@ -23,5 +23,13 @@ services:
         value: "true"
       - key: N8N_BLOCK_ENV_ACCESS_IN_NODE # Keep for Code node access
         value: "false"
+        envVars:
+  # ... all your existing keys like N8N_HOST, N8N_TRUST_PROXY, etc.
+  
+  # ---- THIS IS THE FIX ----
+  # Increase the memory available to n8n to prevent crashes
+  - key: NODE_OPTIONS
+    value: "--max-old-space-size=1536"
+  # -------------------------
         
     autoDeploy: true
