@@ -23,18 +23,20 @@ services:
       - key: N8N_BLOCK_ENV_ACCESS_IN_NODE
         value: "false"
 
-      # --- Package installer (You already did this) ---
-      - key: N8N_PM_PACKAGES
-        value: katex
-        
-      # --- THIS IS THE NEW FIX ---
-      # Tells the Code node it's allowed to access 'katex'
-      - key: N8N_MODULES_ALLOWLIST
-        value: katex
-      # -----------------------------------------------
-
       # --- Your memory fix ---
       - key: NODE_OPTIONS
         value: "--max-old-space-size=1536"
+
+      # --- KICK 1: Install KaTeX ---
+      - key: N8N_PM_PACKAGES
+        value: katex
+
+      # --- FIX 2: Allow KaTeX in Code Node ---
+      - key: N8N_MODULES_ALLOWLIST
+        value: katex
+
+      # --- FIX 3: Fix the 'trust proxy' ValidationError ---
+      - key: N8N_EXPRESS_TRUST_PROXY
+        value: "true"
 
     autoDeploy: true
