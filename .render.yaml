@@ -2,7 +2,6 @@ services:
   - type: web
     name: n8n
     env: docker
-    # This correctly tells Render to build the Dockerfile in this repository
     dockerfilePath: ./Dockerfile
     dockerContext: .
     disk:
@@ -10,7 +9,7 @@ services:
       mountPath: /data
       sizeGB: 10
     envVars:
-      # Keep only the variables that are specific to the Render environment
+      # --- Existing Render-specific keys ---
       - key: N8N_HOST
         value: n8n-ffmpeg-deploy-tkgq.onrender.com
       - key: N8N_PROTOCOL
@@ -19,17 +18,19 @@ services:
         value: https://n8n-ffmpeg-deploy-tkgq.onrender.com/
       - key: N8N_ENCRYPTION_KEY
         generateValue: true
-      - key: N8N_RUNNERS_ENABLED # Keep runners enabled
+      - key: N8N_RUNNERS_ENABLED
         value: "true"
-      - key: N8N_BLOCK_ENV_ACCESS_IN_NODE # Keep for Code node access
+      - key: N8N_BLOCK_ENV_ACCESS_IN_NODE
         value: "false"
-        envVars:
-  # ... all your existing keys like N8N_HOST, N8N_TRUST_PROXY, etc.
-  
-  # ---- THIS IS THE FIX ----
-  # Increase the memory available to n8n to prevent crashes
-  - key: NODE_OPTIONS
-    value: "--max-old-space-size=1536"
-  # -------------------------
-        
+
+      # --- This is the fix you asked for ---
+      - key: N8N_PM_PACKAGES
+        value: katex
+      # --------------------------------------
+
+      # --- This is your memory fix, now correctly placed ---
+      - key: NODE_OPTIONS
+        value: "--max-old-space-size=1536"
+      # ---------------------------------------------------
+
     autoDeploy: true
