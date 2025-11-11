@@ -23,8 +23,8 @@ RUN apk add --no-cache \
     libffi-dev
 
 # Install your Python libraries
-# We add --break-system-packages to override PEP 668
-RUN pip install --upgrade pip && \
+# We add --break-system-packages to BOTH commands
+RUN pip install --upgrade pip --break-system-packages && \
     pip install --break-system-packages \
     numpy \
     scipy \
