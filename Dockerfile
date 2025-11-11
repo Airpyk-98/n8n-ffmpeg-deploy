@@ -29,8 +29,8 @@ RUN pip install --upgrade pip --break-system-packages && \
     numpy \
     scipy \
     pandas \
-    matplotlib \
-    rdkit-pypi
+    matplotlib
+    # rdkit-pypi (Commented out - no version available for Python 3.12 on Alpine)
 
 # === END OF PACKAGE INSTALLS ===
 
