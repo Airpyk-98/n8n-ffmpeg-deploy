@@ -5,10 +5,10 @@ FROM docker.n8n.io/n8nio/n8n:latest
 USER root
 
 # ---- THE DEFINITIVE FIX ----
-# (Your existing proxy fix)
+# (Your existing proxy fix - now with correct spacing)
 RUN mkdir -p /home/node/.n8n/ && \
-    echo "module.exports = { express: { 'trust proxy': true } };" > /home/node/.n8n/config.js && \
-    chown -R node:node /home/node/.n8n
+    echo "module.exports = { express: { 'trust proxy': true } };" > /home/node/.n8n/config.js && \
+    chown -R node:node /home/node/.n8n
 
 # === START OF ADDITIONS ===
 
